@@ -43,6 +43,23 @@ exports.update = function(req, res) {
   /** TODO **/
   /* Replace the article's properties with the new properties found in req.body */
   /* Save the article */
+
+  Listing.findOneAndUpdate({ 
+    _id: listing._id}, {
+      code: req.body.code,
+      name: req.body.name,
+      coordinates: req.body.coordinates,
+      address: req.body.address
+    },
+    {
+      new: true
+    }, function(err, document) {
+      if (err) { console.log(err);
+      } else {
+        console.log('TCL: exports.update -> document', document);
+        res.json(document);
+      }
+  });
 };
 
 /* Delete a listing */
@@ -51,13 +68,31 @@ exports.delete = function(req, res) {
 
   /** TODO **/
   /* Remove the article */
+
+  Listing.deleteOne({
+    _id: listing._id}, function (err) {
+      if (err) { console.log(err);
+    } else {
+      res.json(listing);
+    }
+  })
 };
 
 /* Retreive all the directory listings, sorted alphabetically by listing code */
 exports.list = function(req, res) {
   /** TODO **/
   /* Your code here */
+  Listing.find({}, (err, listings) => {
+    if(err) {
+      console.log(err);
+      res.status(400).send(err);
+    } else {
+      res.json(listings);
+    }
+  })
+ 
 };
+
 
 /* 
   Middleware: find a listing by its ID, then pass it to the next request handler. 
