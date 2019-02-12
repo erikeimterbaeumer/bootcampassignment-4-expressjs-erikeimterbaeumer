@@ -1,8 +1,12 @@
-var config = require('./config'), 
-    mongoose = require('mongoose'),   
-    express = require('./express');
+var config = require('./config'),
+  mongoose = require('mongoose'),
+  express = require('./express');
 
-module.exports.start = function() {
+module.exports.start = function () {
   var app = express.init();
-  app.listen(process.env.PORT || 5000)
+  let port = process.env.PORT;
+  if (port == null || port == "") {
+    port = 8000;
+  }
+  app.listen(port);
 };
